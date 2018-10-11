@@ -6,7 +6,7 @@
 export const config = {
 
     // Watermark to be used in the poster
-    watermarkLabel: "postyposter.com",
+    watermarkLabel: "bulaava.in",
 
     // Google Analytics ID
     googleAnalytics: "X",

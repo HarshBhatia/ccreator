@@ -87,19 +87,17 @@ export class ArtboardClass {
                     position: fixed;
                     right: 0;
                     bottom: 0;
+                    font-weight: 500;
                     z-index: 100;
                     opacity: 0.5;
-
                     padding: 10px;
-                    border-top-left-radius: 4px;
-
+                    border-top-left-radius: 12px;
                     color: white;
-                    font-size: 20px;
-                    font-family: 'Source Sans Pro', sans-serif;
-
+                    font-size: 30px;
+                    font-family: 'Work Sans', sans-serif;
+                    text-transform: uppercase;
                     background: rgba(0, 0, 0, 0.5);
-                    
-                    user-select: none !important; 
+                    user-select: none !important;
                 }
             </style>
             <style>

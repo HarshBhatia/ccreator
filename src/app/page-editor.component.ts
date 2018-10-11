@@ -311,9 +311,8 @@ export class PageEditorComponent {
         // Add website stylesheet and additional stylesheet to to be rendered.
         toBeRendered = window.document.getElementById('mainstyle').outerHTML + toBeRendered;
         toBeRendered = this.fontStyleOuterHTML + toBeRendered;
-
         // Remove 2px border
-        toBeRendered = `<style>#artboard { border: none !important; } </style>` + toBeRendered;
+        toBeRendered = `<style>#artboard { border: none !important; } #artboard.watermark { display: none; } </style>` + toBeRendered;
         
         this.artboard.setOutput(toBeRendered);
 

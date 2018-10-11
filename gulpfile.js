@@ -46,6 +46,8 @@ const autoprefixer = require('autoprefixer');
  */
 
 const argv = yargs.argv;
+const hostAddress = '0.0.0.0';
+
 const hostPort = 60571;
 
 let minify = false; // True : Enable minify on all files
@@ -178,6 +180,7 @@ gulp.task('assets', () => {
 gulp.task('connect', () => {
     connect.server({
         root: ['dist'],
+        host:hostAddress,
         // fallback: 'dist/index.html', // Enable this if not using angular HashLocationStrategy
         port: hostPort,
         https: false
