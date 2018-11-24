@@ -77,6 +77,7 @@ export class DataDesignProcessorClass {
         // If the child json doesn't have fonts and size, we will take them from parent json
         dataDesignMerged[0].fonts = dataDesignMerged[0].fonts ? dataDesignMerged[0].fonts : this.dataDesignParent[0].fonts;
         dataDesignMerged[0].size = dataDesignMerged[0].size ? dataDesignMerged[0].size : this.dataDesignParent[0].size;
+        dataDesignMerged[0].price = dataDesignMerged[0].price ? dataDesignMerged[0].price : this.dataDesignParent[0].price;
 
         // Merging designProperties
         // This merging designed to merge properties that already exist in parent,

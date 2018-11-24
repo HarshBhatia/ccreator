@@ -21,8 +21,9 @@
         .row.pack-content
             .col-sm-6.col-md-4.col-lg-3(*ngFor='let design of pack.designs')
                 .panel.panel-design
-                    .panel-heading {{ design.title[translate.currentLang] }}
+                    .panel-heading {{ design.title[translate.currentLang] }} 
                     .panel-body
+                        .design-price Price: ₹{{design.price}}
                         img.img-responsive(
                             [attr.src]="getDesignThumbnail(pack.packID, design.designID)", 
                             [routerLink]="['/editor', pack.packID, design.designID]",

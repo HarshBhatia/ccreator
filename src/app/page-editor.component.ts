@@ -28,8 +28,10 @@ import { DataDesignProcessorClass } from './data-design-processor.class';
 import { ModalComponent } from './modal.component';
 
 import * as tool from './tools';
-
+var crypto = require('crypto');
 let createTextVersion = require("textversionjs");
+
+declare var bolt: any;
 
 @Component({
     moduleId: module.id,
@@ -49,11 +51,12 @@ export class PageEditorComponent {
 
     // Array version of designProperties, cause we need it to be looped in template later
     private designPropertiesArray: DesignProperty[] = [];
-
+    private boltObj: any;
     private designStyle: string;
     private designTemplate: string;
     private designFonts: any;
     private designSize: any;
+    private designPrice: any;
 
     private artboard: ArtboardClass;
     private artboardScaleStyle: string;
@@ -94,6 +97,8 @@ export class PageEditorComponent {
         this.setLoading('webfont');
 
         let dataDesignProcessor = new DataDesignProcessorClass();
+
+        this.boltObj = bolt;
 
         // getting params from url
         this.route.params
@@ -140,6 +145,9 @@ export class PageEditorComponent {
         this.designSize = dataDesign[0].size;
         this.designTemplate = dataDesign[1];
         this.designStyle = dataDesign[2];
+        this.designPrice = dataDesign[0].price;
+
+        console.log(dataDesign.price)
 
         // Check if the user is reediting (coming back from page-done)
         if (this.storageService.getData('designProperties')) {
@@ -187,6 +195,7 @@ export class PageEditorComponent {
             .setHeight(this.designSize.h)
             .setStyle(this.designStyle)
             .setTemplate(this.designTemplate)
+            .setPrice(this.designPrice)
             .capsulize()
             .drawAll(this.designProperties)
 
@@ -306,29 +315,63 @@ export class PageEditorComponent {
 
     finalize() {
 
-        let toBeRendered = this.artboard.getOutput();
+        let pd  = {
+            "key": "q5tg7PPU",
+            "udf5":"asd",
+            "salt":"DTWo35XeRE",
+            "txnid": "tid",
+            "email":"bhatiaharsh007@gmail.com",
+            "amount":this.artboard.getPrice(),
+            "productinfo": "Hello",
+            "surl" : "https://google.com",
+            "furl": "https://google.com",
+            "phone":"6111111111",
+            "firstname":"Harsh",
+            "hash": "ac763c1ebc8e4ec0686fe6a5df85ef35f5984c0752a1a0a30146a2e7dd85c444589cafc47cef7b41681653897d72b79beb368bfcf1f571225daadf5620ae7557"
+        }
 
-        // Add website stylesheet and additional stylesheet to to be rendered.
-        toBeRendered = window.document.getElementById('mainstyle').outerHTML + toBeRendered;
-        toBeRendered = this.fontStyleOuterHTML + toBeRendered;
-        // Remove 2px border
-        toBeRendered = `<style>#artboard { border: none !important; } #artboard.watermark { display: none; } </style>` + toBeRendered;
+        var cryp = crypto.createHash('sha512');
+		var text = pd.key+'|'+pd.txnid+'|'+pd.amount+'|'+pd.productinfo+'|'+pd.firstname+'|'+pd.email+'|||||'+pd.udf5+'||||||'+pd.salt;
+		cryp.update(text);
+		var hash = cryp.digest('hex')
+
+        pd['hash'] = hash
+        console.log(hash)
+        console.log(bolt)
+        console.log(pd)
+        bolt.launch(pd, {
+            responseHandler: function(response: any) {
+                console.log("Reponse: " + response)
+            },
+            catchException: function(error: any){
+                console.log(error)
+              }
+        })
+
+        // let toBeRendered = this.artboard.getOutput();
+
         
-        this.artboard.setOutput(toBeRendered);
+        // // Add website stylesheet and additional stylesheet to to be rendered.
+        // toBeRendered = window.document.getElementById('mainstyle').outerHTML + toBeRendered;
+        // toBeRendered = this.fontStyleOuterHTML + toBeRendered;
+        // // Remove 2px border
+        // toBeRendered = `<style>#artboard { border: none !important; } #artboard:before { display: none; } </style>` + toBeRendered;
+        
+        // this.artboard.setOutput(toBeRendered);
 
-        // Save hasChanges universally, incase the user goes back from the final page
-        this.storageService.setData('hasChanges', this.guard)
+        // // Save hasChanges universally, incase the user goes back from the final page
+        // this.storageService.setData('hasChanges', this.guard)
 
-        // Save has Changes to universal storage
-        this.storageService.setData('artboard', this.artboard);
+        // // Save has Changes to universal storage
+        // this.storageService.setData('artboard', this.artboard);
 
-        // Save design properties to universal storage, incase the user is want to go back and edit again from the page-done page.
-        this.storageService.setData('designProperties', this.designProperties);
+        // // Save design properties to universal storage, incase the user is want to go back and edit again from the page-done page.
+        // this.storageService.setData('designProperties', this.designProperties);
 
-        // Go to renderer page
-        this.router.navigate(['done']);
+        // // Go to renderer page
+        // this.router.navigate(['done']);
 
-        this.guard = false;
+        // this.guard = false;
     }
 
     scaleArtboard() {

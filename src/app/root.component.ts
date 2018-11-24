@@ -19,9 +19,7 @@ export class RootComponent {
 
         // Set language, change it in config.ts file
         translate.use(config.language);
-
         window.ga('create', config.googleAnalytics, 'auto');
-
         router.events
             .filter(event => event instanceof NavigationEnd)
             .subscribe((event:NavigationEnd) => {

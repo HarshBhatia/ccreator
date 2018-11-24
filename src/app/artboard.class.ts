@@ -20,6 +20,7 @@ export class ArtboardClass {
 
     private width: number;
     private height: number;
+    private price: string;
 
     readonly regex1: RegExp = /__(.*?)__/g;
     readonly regex2: RegExp = /\[\[%#-->\[(.*?)]{([^]*?)}<--#%]]/g;
@@ -40,6 +41,16 @@ export class ArtboardClass {
 
     public getWidth(): number {
         return this.width;
+    }
+
+    public setPrice(price: string): this {
+        this.price = price;
+        return this
+    }
+
+
+    public getPrice(): string {
+        return this.price;
     }
 
     public setStyle(styleRaw: string): this {
